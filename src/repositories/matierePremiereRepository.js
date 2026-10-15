@@ -9,10 +9,12 @@ const findAll = () =>
 const findById = (id) =>
   MatierePremiere.findById(id).populate({ path: 'stock', select: '-mouvements' });
 
+const findByIds = (ids) => MatierePremiere.find({ _id: { $in: ids } }).select('_id');
+
 const updateById = (id, data) =>
   MatierePremiere.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true }).populate({
     path: 'stock',
     select: '-mouvements',
   });
 
-module.exports = { create, findAll, findById, updateById };
+module.exports = { create, findAll, findById, findByIds, updateById };

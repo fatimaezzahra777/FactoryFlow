@@ -6,5 +6,6 @@ router.use('/auth', require('./authRoutes'));
 router.use('/users', require('./userRoutes'));
 router.use('/raw-materials', require('./matierePremiereRoutes'));
 router.use('/stock', require('./stockRoutes'));
+router.use('/products', require('./produitRoutes'));
 
 module.exports = router;

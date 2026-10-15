@@ -10,7 +10,7 @@ const findById = (id) =>
   MatierePremiere.findById(id).populate({ path: 'stock', select: '-mouvements' });
 
 const updateById = (id, data) =>
-  MatierePremiere.findByIdAndUpdate(id, data, { new: true, runValidators: true }).populate({
+  MatierePremiere.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true }).populate({
     path: 'stock',
     select: '-mouvements',
   });

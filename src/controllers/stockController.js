@@ -3,12 +3,11 @@ const asyncHandler = require('../utils/asyncHandler');
 const { success, paginated } = require('../utils/response');
 
 const addEntry = asyncHandler(async (req, res) => {
-  const movement = await stockService.addEntry(req.body, req.user.id);
-  success(res, movement, 201);
+  success(res, await stockService.addEntry(req.body, req.user.id), 201);
 });
 
 const listMovements = asyncHandler(async (req, res) => {
-  paginated(res, await stockService.listMovements(req.query));
+  paginated(res, await stockService.listMovements(req.validatedQuery));
 });
 
 module.exports = { addEntry, listMovements };

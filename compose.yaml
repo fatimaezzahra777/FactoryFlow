@@ -1,17 +1,27 @@
 services:
   backend:
-    build: .
+    build: ./backend
     ports:
       - "3000:3000"
-    env_file: .env
+    env_file: ./backend/.env
     environment:
       MONGO_URI: mongodb://mongo:27017/factoryflow?replicaSet=rs0
     volumes:
-      - ./:/app
+      - ./backend:/app
       - /app/node_modules
     depends_on:
       mongo:
         condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:3000
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
 
   mongo:
     image: mongo:7

@@ -1,3 +1,3 @@
 export default function Loader() {
-  return <p className="loader" role="status">Chargement…</p>;
+  return <p role="status" className="p-12 text-center text-muted">Chargement…</p>;
 }

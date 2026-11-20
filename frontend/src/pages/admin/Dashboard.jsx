@@ -1,3 +1,5 @@
+import PageHeader from '../../components/PageHeader';
+
 export default function Dashboard() {
-  return <h1>Tableau de bord</h1>;
+  return <PageHeader title="Tableau de bord" />;
 }

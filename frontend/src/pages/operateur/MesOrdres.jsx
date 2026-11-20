@@ -1,3 +1,5 @@
+import PageHeader from '../../components/PageHeader';
+
 export default function MesOrdres() {
-  return <h1>Mes ordres</h1>;
+  return <PageHeader title="Mes ordres" />;
 }

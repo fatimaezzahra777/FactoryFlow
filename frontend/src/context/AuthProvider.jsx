@@ -7,7 +7,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(() => Boolean(localStorage.getItem('token')));
 
-  // Au démarrage : si un token existe, le rôle vient du serveur (GET /auth/me)
   useEffect(() => {
     if (!localStorage.getItem('token')) return undefined;
     let cancelled = false;

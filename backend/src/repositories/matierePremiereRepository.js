@@ -9,7 +9,7 @@ const findAll = () =>
 const findById = (id) =>
   MatierePremiere.findById(id).populate({ path: 'stock', select: '-mouvements' });
 
-const findByIds = (ids) => MatierePremiere.find({ _id: { $in: ids } }).select('_id');
+const findByIds = (ids) => MatierePremiere.find({ _id: { $in: ids } }).select('_id reference name unite');
 
 const updateById = (id, data) =>
   MatierePremiere.findByIdAndUpdate(id, data, { returnDocument: 'after', runValidators: true }).populate({

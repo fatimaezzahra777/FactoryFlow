@@ -95,4 +95,18 @@ const findBelowThreshold = () =>
     { $sort: { quantite: 1 } },
   ]);
 
-module.exports = { create, findByMatiere, addEntry, listMovements, findBelowThreshold };
+// Sortie de stock : décrémentation et mouvement EXIT en UNE opération atomique.
+// Le filtre $gte empêche tout stock négatif ; retourne null si le stock est insuffisant.
+const consume = (matiereId, quantite, orderId, userId, session) =>
+  Stock.findOneAndUpdate(
+    { matiere: matiereId, quantite: { $gte: quantite } },
+    {
+      $inc: { quantite: -quantite },
+      $push: {
+        mouvements: { type: MOVEMENT_TYPE.EXIT, quantite, user: userId, order: orderId, createdAt: new Date() },
+      },
+    },
+    { returnDocument: 'after', session, projection: { mouvements: { $slice: -1 } } }
+  );
+
+module.exports = { create, findByMatiere, addEntry, consume, listMovements, findBelowThreshold };

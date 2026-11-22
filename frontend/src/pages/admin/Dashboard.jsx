@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { listMaterials } from '../../api/materialsApi';
 import { listProducts } from '../../api/productsApi';
+import { getOrderStats } from '../../api/ordersApi';
 import { useFetch } from '../../hooks/useFetch';
 import { stockOf, isLow } from '../../utils/stock';
 import PageHeader from '../../components/PageHeader';
@@ -20,10 +21,14 @@ const STATUS_LABELS = {
   CANCELLED: 'Annulé',
 };
 
-// Fonction stable (définie hors du composant) : requise par useFetch
+// Fonction stable (hors du composant) : requise par useFetch
 const loadDashboard = async () => {
-  const [materials, products] = await Promise.all([listMaterials(), listProducts()]);
-  return { materials, products };
+  const [materials, products, orders] = await Promise.all([
+    listMaterials(),
+    listProducts({ limit: 1 }),
+    getOrderStats(),
+  ]);
+  return { materials, productCount: products.pagination?.total ?? 0, orders };
 };
 
 export default function Dashboard() {
@@ -35,16 +40,14 @@ export default function Dashboard() {
   if (loading) return <Loader />;
   if (error) return <ErrorMessage message={error} />;
 
-  const productCount = data.products.pagination?.total ?? data.products.data?.length ?? 0;
-
   return (
     <>
       <PageHeader title="Tableau de bord" />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <StatCard label="Produits" value={productCount} />
+        <StatCard label="Produits" value={data.productCount} />
         <StatCard label="Matières premières" value={data.materials.length} hint={`${lowMaterials.length} sous le seuil`} />
-        <StatCard label="Ordres" value="—" hint="Disponible avec le module ordres" />
+        <StatCard label="Ordres" value={data.orders.total} />
       </div>
 
       <Panel title="Ordres par statut">
@@ -52,7 +55,7 @@ export default function Dashboard() {
           {Object.entries(STATUS_LABELS).map(([status, label]) => (
             <div key={status} className="border border-line p-4">
               <p className="text-[13px] text-muted">{label}</p>
-              <p className="text-2xl font-light">—</p>
+              <p className="text-2xl font-light">{data.orders.byStatus[status] ?? 0}</p>
             </div>
           ))}
         </div>

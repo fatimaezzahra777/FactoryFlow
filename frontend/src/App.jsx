@@ -12,6 +12,7 @@ import AppLayout from './layouts/AppLayout';
 import Matieres from './pages/admin/Matieres';
 import Produits from './pages/admin/Produits';
 import Ordres from './pages/admin/Ordres';
+import OrdreNouveau from './pages/admin/OrdreNouveau';
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
             <Route path="matieres" element={<Matieres />} />
             <Route path="produits" element={<Produits />} />
             <Route path="ordres" element={<Ordres />} />
+    <Route path="ordres/nouveau" element={<OrdreNouveau />} />
           </Route>
         </Route>
 
